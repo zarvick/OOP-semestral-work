@@ -1,4 +1,6 @@
 # this program contains games implementaiton main logic
+import random # built-in class that can pick random thing from a parameter depending on its data type
+from pathlib import Path
 
 class game():
 
@@ -11,14 +13,14 @@ class game():
         return []
 
     def choose_word(self):
-        import random # built-in class that can pick random thing from a parameter depending on its data type
         self.random_word = random.choice(self.words).upper() # .upper() converts the words into uppercase
         return self.random_word
-
+    
     def try_word(self, word): # method that checks that the word has right length compared to choosen 4,5,6 letter game
         word = word.upper() # .upper() converts the words into uppercase
         if len(word) != self.word_length():
-            raise ValueError(f"Word must be {self.word_length()} letters long") # if the condition is not TRUE than prints this error
+            print(f"Word must be {self.word_length()} letters long") # if the condition is not TRUE than prints this error
+            return None
         return word
 
     def split_words(self, word):
@@ -52,7 +54,6 @@ class game_4letter(game):
         super().__init__()
 
     def load_words(self):
-        from pathlib import Path
         self.choosen_word = Path("wordlists/4_letter_words.txt").read_text(encoding="utf-8").splitlines()
         return self.choosen_word
 
@@ -68,7 +69,6 @@ class game_5letter(game):
         super().__init__()
 
     def load_words(self):
-        from pathlib import Path
         self.choosen_word = Path("wordlists/5_letter_words.txt").read_text(encoding="utf-8").splitlines()
         return self.choosen_word
 
@@ -84,7 +84,6 @@ class game_6letter(game):
         super().__init__()
 
     def load_words(self):
-        from pathlib import Path
         self.choosen_word = Path("wordlists/6_letter_words.txt").read_text(encoding="utf-8").splitlines()
         return self.choosen_word
 
@@ -105,9 +104,9 @@ print("Random 6-letter word:", game6.choose_word())
 
 # test that length of the word is correct/incorrect
 game4.try_word("test")    # správná délka
-# game4.try_word("hello")   # špatná délka → mělo by vyhodit ValueError
+game4.try_word("hello")   # špatná délka → mělo by vyhodit ValueError
 game5.try_word("hello")   # správná délka
-# game5.try_word("test")    # špatná délka → mělo by vyhodit ValueError
+game5.try_word("test")    # špatná délka → mělo by vyhodit ValueError
 game6.try_word("rabbit")  # správná délka
 
 # test for letters separation and comparison with random choosen word
