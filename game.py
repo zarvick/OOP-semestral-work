@@ -42,12 +42,47 @@ class game():
         return result # returns the result of this cycle into the list: result = []
 
 
-    def evaluate_guess():
-        pass
+    def evaluate_guess(self):
+        # picks one random word
+        self.choose_word()
+        
+        target = self.random_word.upper() 
+
+        print(f"--- NEW GAME ({self.word_length()} letters) ---")
+        print(f"You have {self.max_attempts()} attempts.")
+
+        attempt = 1
+
+        while attempt <= self.max_attempts():
+
+            guess = input(f"Attempt {attempt}/{self.max_attempts()}: Enter your word: ")
+
+            checked_word = self.try_word(guess) # takes the word which is typed into terminal and uses the try_word method to check if its length is correct 
+
+            # wrong word length
+            if checked_word is None:
+                print(f"Try again — incorrect length. The word needs to be {self.word_length()} long!")
+                continue   # DOES NOT increase attempt, so player retries
+
+            # valid word length -> uses method for comparison with target word
+            result = self.compare_words(checked_word)
+            print("Result:", result)
+
+            # incase the player correctly gusses the target word
+            if checked_word.upper() == target:
+                print(f"YOU WON! THE WORD WAS: {target}")
+                return True
+
+            attempt += 1   # increase only for valid attempts
+
+        # the loop ends which means player ran out of attempts to find the target word
+        print(f"YOU LOST! THE WORD WAS: {target}")
+        return False
 
     def reset():
         pass
 
+# child class which represents game with 4 letters and its own parameters 
 class game_4letter(game):
 
     def __init__(self):
@@ -60,9 +95,10 @@ class game_4letter(game):
     def word_length(self):
         return 4
 
-    def max_attempts():
-        pass
+    def max_attempts(self):
+        return 5
 
+# child class which represents game with 5 letters and its own parameters 
 class game_5letter(game):
 
     def __init__(self):
@@ -75,9 +111,10 @@ class game_5letter(game):
     def word_length(self):
         return 5
     
-    def max_attempts():
-        pass
+    def max_attempts(self):
+        return 6
 
+# child class which represents game with 6 letters and its own parameters
 class game_6letter(game):
 
     def __init__(self):
@@ -90,8 +127,8 @@ class game_6letter(game):
     def word_length(self):
         return 6
 
-    def max_attempts():
-        pass
+    def max_attempts(self):
+        return 7
 
 
 # test that the import works correctly
@@ -117,3 +154,7 @@ print("Chosen word (4-letter):", game4.random_word)
 print("Your guess:", test_guess)
 print("Comparison result:", game4.compare_words(test_guess))
 # doesnt work if the same letter is used more than once !!!!
+
+# test that the game runs until the attemps reach their maximum
+game5 = game_5letter()
+game5.evaluate_guess()
