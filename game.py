@@ -1,6 +1,6 @@
 # this program contains games implementaiton main logic
 import random # built-in class that can pick random thing from a parameter depending on its data type
-from pathlib import Path
+from pathlib import Path # reads a path so I can import a .txt from it later
 
 class game():
 
@@ -79,8 +79,6 @@ class game():
         print(f"YOU LOST! THE WORD WAS: {target}")
         return False
 
-    def reset():
-        pass
 
 # child class which represents game with 4 letters and its own parameters 
 class game_4letter(game):
