@@ -128,31 +128,37 @@ class game_6letter(game):
     def max_attempts(self):
         return 7
 
+######### TEST ##########
 
 # test that the import works correctly
-game4 = game_4letter()
-game5 = game_5letter()
-game6 = game_6letter()
-print("Random 4-letter word:", game4.choose_word())
-print("Random 5-letter word:", game5.choose_word())
-print("Random 6-letter word:", game6.choose_word())
+# game4 = game_4letter()
+# game5 = game_5letter()
+# game6 = game_6letter()
+# print("Random 4-letter word:", game4.choose_word())
+# print("Random 5-letter word:", game5.choose_word())
+# print("Random 6-letter word:", game6.choose_word())
 
 # test that length of the word is correct/incorrect
-game4.try_word("test")    # správná délka
-game4.try_word("hello")   # špatná délka → mělo by vyhodit ValueError
-game5.try_word("hello")   # správná délka
-game5.try_word("test")    # špatná délka → mělo by vyhodit ValueError
-game6.try_word("rabbit")  # správná délka
+# game4.try_word("test")    # správná délka
+# game4.try_word("hello")   # špatná délka → mělo by vyhodit ValueError
+# game5.try_word("hello")   # správná délka
+# game5.try_word("test")    # špatná délka → mělo by vyhodit ValueError
+# game6.try_word("rabbit")  # správná délka
 
 # test for letters separation and comparison with random choosen word
-print("4-letter word:", game4.split_words("test") )
-test_guess = "test"
+# print("4-letter word:", game4.split_words("test") )
+# test_guess = "test"
 
-print("Chosen word (4-letter):", game4.random_word)
-print("Your guess:", test_guess)
-print("Comparison result:", game4.compare_words(test_guess))
+# print("Chosen word (4-letter):", game4.random_word)
+# print("Your guess:", test_guess)
+# print("Comparison result:", game4.compare_words(test_guess))
 # doesnt work if the same letter is used more than once !!!!
 
-# test that the game runs until the attemps reach their maximum
-game5 = game_5letter()
-game5.evaluate_guess()
+# test that the game runs until the attemps reach their maximum, ### this test needs to be comented now because it would run it immediately when main.py is started
+# game5 = game_5letter()
+# game5.evaluate_guess()
+
+######### TEST ##########
+
+# test for knowing if the game.py was imported successfuly into main.py, other used tests are commented for now
+print("Import of game.py was successful.")

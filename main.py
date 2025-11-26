@@ -2,6 +2,10 @@
 import pygame
 import sys
 
+# import of game.py
+import game
+from game import game_4letter, game_5letter, game_6letter # imports the child classes from game.py
+
 # initialization of pygame
 pygame.init()
 
@@ -42,13 +46,32 @@ while running_program:
             running_program = False  # the reason why program will shutdown
 
         if btn4.clicked_button(event):
+
+            # just a tests right now to check if the buttons still work correctly
             print("Start 4-letter game")
 
+            # starts the game of Wordle with target word with 4 letters
+            game4 = game_4letter()
+            game4.evaluate_guess()
+
         if btn5.clicked_button(event):
+
+            # just a tests right now to check if the buttons still work correctly
             print("Start 5-letter game")
 
+            # starts the game of Wordle with target word with 5 letters
+            game5 = game_5letter()
+            game5.evaluate_guess()
+
         if btn6.clicked_button(event):
+
+            # just a tests right now to check if the buttons still work correctly
             print("Start 6-letter game")
+
+            # starts the game of Wordle with target word with 6 letters
+            game6 = game_6letter()
+            game6.evaluate_guess()
+
 
     screen.fill((30,30,30)) # fills the screen with a color
     btn4.draw(screen)
