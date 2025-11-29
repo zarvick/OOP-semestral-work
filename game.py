@@ -42,43 +42,17 @@ class game():
         return result # returns the result of this cycle into the list: result = []
 
 
-    def evaluate_guess(self):
-        # picks one random word
-        self.choose_word()
-        
-        target = self.random_word.upper() 
+    def evaluate_guess(self, guess):
+        guess = self.try_word(guess)
+        if guess is None:
+            return "wrong_length", []
 
-        print(f"--- NEW GAME ({self.word_length()} letters) ---")
-        print(f"You have {self.max_attempts()} attempts.")
-
-        attempt = 1
-
-        while attempt <= self.max_attempts():
-
-            guess = input(f"Attempt {attempt}/{self.max_attempts()}: Enter your word: ")
-
-            checked_word = self.try_word(guess) # takes the word which is typed into terminal and uses the try_word method to check if its length is correct 
-
-            # wrong word length
-            if checked_word is None:
-                print(f"Try again — incorrect length. The word needs to be {self.word_length()} long!")
-                continue   # DOES NOT increase attempt, so player retries
-
-            # valid word length -> uses method for comparison with target word
-            result = self.compare_words(checked_word)
-            print("Result:", result)
-
-            # incase the player correctly gusses the target word
-            if checked_word.upper() == target:
-                print(f"YOU WON! THE WORD WAS: {target}")
-                return True
-
-            attempt += 1   # increase only for valid attempts
-
-        # the loop ends which means player ran out of attempts to find the target word
-        print(f"YOU LOST! THE WORD WAS: {target}")
-        return False
-
+        result = self.compare_words(guess)
+        if guess.upper() == self.random_word.upper():
+            return "win", result
+        elif self.max_attempts() <= 1:
+            return "lose", result
+        return "continue", result
 
 # child class which represents game with 4 letters and its own parameters 
 class game_4letter(game):
