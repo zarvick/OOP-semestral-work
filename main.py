@@ -27,6 +27,7 @@ guess = ""
 # empty parametr which will be filled after player chooses (clicks on one of the 3 buttons) game with word length
 game_object = None # instance of child classes game4_letter, game5_letter, game6_letter,
 
+current_screen = "menu" # this variable will help with changing screens so player cant click on invisible buttons (2 states, menu and game)
 
 class Button():
     def __init__(self, text, color, height, width, x, y):
@@ -141,11 +142,20 @@ class WordleGameUI():
         self.current_row += 1
         self.guess = ""  # reset the input
 
+    def clear_grid(self): # completely clears and resets game grid
+        self.grid_letters = []
+        self.grid_colors = []
+        self.current_row = 0
+        self.guess = ""
+        self.game_over = False
+        self.game_object = None
+
 
 # creation of buttons
 btn4 = Button("4 LETTER GAME", (50, 100, 200), 180, 50, (1280-180)/2, 200)
 btn5 = Button("5 LETTER GAME", (50, 100, 200), 180, 50, (1280-180)/2, 300)
 btn6 = Button("6 LETTER GAME", (50, 100, 200), 180, 50, (1280-180)/2, 400)
+menu_button = Button("MENU", (100, 100, 100), 120, 40, 1280 - 140, 20) # new menu button that returns player from grid game back to target word length selection
 
 # creation of grid instance
 grid = WordleGameUI(screen)
@@ -156,101 +166,122 @@ while running_program:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:  # if i click the X in the right corner the program will shutdown
             running_program = False  # the reason why program will shutdown
+        if current_screen == "menu":
+            if btn4.clicked_button(event): # if player clicks button with text "4 LETTER GAME" 
 
-        if btn4.clicked_button(event): # if player clicks button with text "4 LETTER GAME" 
+                # just a tests right now to check if the buttons still work correctly
+                print("Start 4-letter game")
 
-            # just a tests right now to check if the buttons still work correctly
-            print("Start 4-letter game")
+                # player can type only words with 4 letter and has 5 tries to guess target word
+                selected_word_length = 4
+                selected_max_attempts = 5
 
-            # player can type only words with 4 letter and has 5 tries to guess target word
-            selected_word_length = 4
-            selected_max_attempts = 5
+                # using methods from game.py
+                game_object = game_4letter() # instance of child class game_4letter()
+                game_object.choose_word() # generates the target word
+                grid.game_object = game_object # this lets the instance grid of class WordleGameUI use methods of instance game_object
+                grid.start_game_grid(selected_word_length, selected_max_attempts) # tells grid how big it will be (rows, columns)
+                guess = ""
+                print("Chosen:", game_object.random_word)
 
-            # using methods from game.py
-            game_object = game_4letter() # instance of child class game_4letter()
-            game_object.choose_word() # generates the target word
-            grid.game_object = game_object # this lets the instance grid of class WordleGameUI use methods of instance game_object
-            grid.start_game_grid(selected_word_length, selected_max_attempts) # tells grid how big it will be (rows, columns)
-            guess = ""
-            print("Chosen:", game_object.random_word)
+                current_screen = "game"
 
-            # starts the game of Wordle with target word with 4 letters
-            # game4 = game_4letter()
-            # game4.evaluate_guess()
+                # starts the game of Wordle with target word with 4 letters
+                # game4 = game_4letter()
+                # game4.evaluate_guess()
 
-        if btn5.clicked_button(event): # if player clicks button with text "5 LETTER GAME" 
+            if btn5.clicked_button(event): # if player clicks button with text "5 LETTER GAME" 
 
-            # just a tests right now to check if the buttons still work correctly
-            print("Start 5-letter game")
+                # just a tests right now to check if the buttons still work correctly
+                print("Start 5-letter game")
 
-            # player can type only words with 5 letter and has 6 tries to guess target word
-            selected_word_length = 5
-            selected_max_attempts = 6
+                # player can type only words with 5 letter and has 6 tries to guess target word
+                selected_word_length = 5
+                selected_max_attempts = 6
 
-            # using methods from game.py
-            game_object = game_5letter()
-            game_object.choose_word()
-            grid.game_object = game_object
-            grid.start_game_grid(selected_word_length, selected_max_attempts)
-            guess = ""
-            print("Chosen:", game_object.random_word)
+                # using methods from game.py
+                game_object = game_5letter()
+                game_object.choose_word()
+                grid.game_object = game_object
+                grid.start_game_grid(selected_word_length, selected_max_attempts)
+                guess = ""
+                print("Chosen:", game_object.random_word)
 
-            # starts the game of Wordle with target word with 5 letters
-            # game5 = game_5letter()
-            # game5.evaluate_guess()
+                current_screen = "game"
 
-        if btn6.clicked_button(event): # if player clicks button with text "6 LETTER GAME" 
+                # starts the game of Wordle with target word with 5 letters
+                # game5 = game_5letter()
+                # game5.evaluate_guess()
 
-            # just a tests right now to check if the buttons still work correctly
-            print("Start 6-letter game")
+            if btn6.clicked_button(event): # if player clicks button with text "6 LETTER GAME" 
 
-            # player can type only words with 6 letter and has 7 tries to guess target word
-            selected_word_length = 6
-            selected_max_attempts = 7
+                # just a tests right now to check if the buttons still work correctly
+                print("Start 6-letter game")
 
-            # using methods from game.py
-            game_object = game_6letter()
-            game_object.choose_word()
-            grid.game_object = game_object
-            grid.start_game_grid(selected_word_length, selected_max_attempts)
-            guess = ""
-            print("Chosen:", game_object.random_word)
+                # player can type only words with 6 letter and has 7 tries to guess target word
+                selected_word_length = 6
+                selected_max_attempts = 7
 
-            # starts the game of Wordle with target word with 6 letters
-            # game6 = game_6letter()
-            # game6.evaluate_guess()
+                # using methods from game.py
+                game_object = game_6letter()
+                game_object.choose_word()
+                grid.game_object = game_object
+                grid.start_game_grid(selected_word_length, selected_max_attempts)
+                guess = ""
+                print("Chosen:", game_object.random_word)
 
+                current_screen = "game"
 
-        # keyboard inputs
-        if event.type == pygame.KEYDOWN:
+                # starts the game of Wordle with target word with 6 letters
+                # game6 = game_6letter()
+                # game6.evaluate_guess()
 
-            if event.key == pygame.K_BACKSPACE:
-                if len(grid.guess) > 0:
-                    grid.guess = grid.guess[:-1] # pressing backspace deletes last letter
-                    grid.grid_letters[grid.current_row][len(grid.guess)] = ""   # clear the last letter from the grid when Backspace is pressed
+        elif current_screen == "game":
+
+            # menu button
+            if menu_button.clicked_button(event):
+                current_screen = "menu"
+                selected_word_length = None
+                grid.clear_grid()  # clears whole grid from last game
+                continue
+
+            # disables inputs if the game is over
+            if grid.game_over:
+                continue
+
+            # keyboard inputs
+            if event.type == pygame.KEYDOWN:
+
+                if event.key == pygame.K_BACKSPACE:
+                    if len(grid.guess) > 0:
+                        grid.guess = grid.guess[:-1] # pressing backspace deletes last letter
+                        grid.grid_letters[grid.current_row][len(grid.guess)] = ""   # clear the last letter from the grid when Backspace is pressed
                                                                                 # 'len(grid.guess)' points to the column of the letter being removed
 
-            elif event.key == pygame.K_RETURN and not grid.game_over: # grid.game_over is True than player cant use enter
-                grid.handle_guess() # pressing enter evaluates players guess
+                elif event.key == pygame.K_RETURN and not grid.game_over: # grid.game_over is True than player cant use enter
+                    grid.handle_guess() # pressing enter evaluates players guess
 
-            else:    
-                # check that we have active game (grid.game_object is not None), that pressed keys are only A-Z
-                # and the player hasnt reached word_length yet
-                if not grid.game_over: # wont let user type any letter after the game is over (used to shutdown whole program because of exceeding grids maximum rows)
-                    if grid.game_object and event.unicode.isalpha() and len(grid.guess) < grid.game_object.word_length():
-                        char = event.unicode.upper() # conversion to uppercase
-                        if char in "ABCDEFGHIJKLMNOPQRSTUVWXYZ": # lets user only use A-Z letters
-                            grid.guess += char # adds letter to current players guess
-                        grid.grid_letters[grid.current_row][len(grid.guess)-1] = char # updates grid so that the written word will can show up
+                else:    
+                    # check that we have active game (grid.game_object is not None), that pressed keys are only A-Z
+                    # and the player hasnt reached word_length yet
+                    if not grid.game_over: # wont let user type any letter after the game is over (used to shutdown whole program because of exceeding grids maximum rows)
+                        if grid.game_object and event.unicode.isalpha() and len(grid.guess) < grid.game_object.word_length():
+                            char = event.unicode.upper() # conversion to uppercase
+                            if char in "ABCDEFGHIJKLMNOPQRSTUVWXYZ": # lets user only use A-Z letters
+                                grid.guess += char # adds letter to current players guess
+                            grid.grid_letters[grid.current_row][len(grid.guess)-1] = char # updates grid so that the written word will can show up
 
 
     screen.fill((30,30,30)) # fills the screen with a color, background
 
-    if selected_word_length is None: # first the player needs to set a length of target word to move onto guessing grid
+    if current_screen == "menu": # player will see those buttons first cause of the initial value of current_screen, back than used to work with setting word_length after pressing one of those buttons
         btn4.draw(screen)
         btn5.draw(screen)
         btn6.draw(screen)
-    else:
+    elif current_screen == "game":
+        # draw menu button
+        menu_button.draw(screen)
+
         grid.start_game_grid(selected_word_length, selected_max_attempts) # draws the grid
 
     pygame.display.flip() # finally displays everything drawn in this frame, updates the screen
