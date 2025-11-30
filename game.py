@@ -7,6 +7,7 @@ class game():
     def __init__(self):
         self.words = self.load_words()
         self.random_word = None
+        self.attempts_left = self.max_attempts()
 
     def load_words(self):
         # abstract method, implementation of this method is in children classes
@@ -50,8 +51,11 @@ class game():
         result = self.compare_words(guess)
         if guess.upper() == self.random_word.upper():
             return "win", result
-        elif self.max_attempts() <= 1:
+        
+        self.attempts_left -= 1
+        if self.attempts_left == 0:
             return "lose", result
+        
         return "continue", result
 
 # child class which represents game with 4 letters and its own parameters 

@@ -55,6 +55,7 @@ class WordleGameUI():
         self.grid_colors  = [] # list of colors which are evaluated after the guess word is send into grid
         self.guess = "" 
         self.game_object = None # instance of game class (4,5,6 letter)
+        self.game_over = False # parameter that helps with ending the game correctly
 
     def start_game_grid(self, word_length, max_attempts):
 
@@ -125,18 +126,21 @@ class WordleGameUI():
         self.grid_letters[self.current_row] = letters
         self.grid_colors[self.current_row] = colors
 
+        # evaluates the status and ends the game so player cant type any of characters
+        if status == "win":
+            self.game_over = True
+            print(f"YOU WON! THE WORD WAS: {self.game_object.random_word}")
+            return
+
+        if status == "lose":
+            self.game_over = True
+            print(f"YOU LOST! THE WORD WAS: {self.game_object.random_word}")
+            return
+
         # move to next row and reset input
         self.current_row += 1
         self.guess = ""  # reset the input
 
-        # prints result message after evaluation depending on the conditions
-        if status == "win":
-            print(f"YOU WON! THE WORD WAS: {self.game_object.random_word}")
-        else:
-            # check lose condition here based on current_row
-            if self.current_row + 1 >= self.max_attempts:  # last attepmt
-                status = "lose"
-                print(f"YOU LOST! THE WORD WAS: {self.game_object.random_word}")
 
 # creation of buttons
 btn4 = Button("4 LETTER GAME", (50, 100, 200), 180, 50, (1280-180)/2, 200)
@@ -226,17 +230,18 @@ while running_program:
                     grid.grid_letters[grid.current_row][len(grid.guess)] = ""   # clear the last letter from the grid when Backspace is pressed
                                                                                 # 'len(grid.guess)' points to the column of the letter being removed
 
-            elif event.key == pygame.K_RETURN:
+            elif event.key == pygame.K_RETURN and not grid.game_over: # grid.game_over is True than player cant use enter
                 grid.handle_guess() # pressing enter evaluates players guess
 
             else:    
                 # check that we have active game (grid.game_object is not None), that pressed keys are only A-Z
                 # and the player hasnt reached word_length yet
-                if grid.game_object and event.unicode.isalpha() and len(grid.guess) < grid.game_object.word_length():
-                    char = event.unicode.upper() # conversion to uppercase
-                    if char in "ABCDEFGHIJKLMNOPQRSTUVWXYZ": # lets user only use A-Z letters
-                        grid.guess += char # adds letter to current players guess
-                    grid.grid_letters[grid.current_row][len(grid.guess)-1] = char # updates grid so that the written word will can show up
+                if not grid.game_over: # wont let user type any letter after the game is over (used to shutdown whole program because of exceeding grids maximum rows)
+                    if grid.game_object and event.unicode.isalpha() and len(grid.guess) < grid.game_object.word_length():
+                        char = event.unicode.upper() # conversion to uppercase
+                        if char in "ABCDEFGHIJKLMNOPQRSTUVWXYZ": # lets user only use A-Z letters
+                            grid.guess += char # adds letter to current players guess
+                        grid.grid_letters[grid.current_row][len(grid.guess)-1] = char # updates grid so that the written word will can show up
 
 
     screen.fill((30,30,30)) # fills the screen with a color, background
