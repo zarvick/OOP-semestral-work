@@ -30,17 +30,29 @@ class game():
     def compare_words(self, guess):
         guess = self.try_word(guess) # definiton of new parameter
         target = self.random_word.upper() # same thing for target word
-        result = [] # empty list where after for cycle are printed colors based on the conditions
+        result = ["grey"] * self.word_length() # list which is updated after every for cycle based on the conditions, initial state is that all indexes are "grey"
 
-        for i, letter in enumerate(guess):
-            if letter == target[i]: # when the letter and its position in guess word matches target word
-                result.append("green")
-            elif letter in target: # if the letter in guess word is somewhere used in target word, so correct letter but not position
-                result.append("yellow")
-            else: # letter which is in guess word but not present in target word
-                result.append("grey")
+        # helps to check for multiple appereance of same letter
+        remaining = {}
+        for ch in target:
+            remaining[ch] = remaining.get(ch, 0) + 1 # count how many times each letter appears in the target word
+                                                     # .get(ch, 0) returns 0 if the letter is not yet in the dictionary
 
-        return result # returns the result of this cycle into the list: result = []
+        # checking for letters with correct position in target word compared to guess
+        for i in range(self.word_length()):
+            if guess[i] == target[i]: # if this codition is True it fills the letters index in list result with "green"
+                result[i] = "green"
+                remaining[guess[i]] -= 1 # reduce the count of this letter because it was already matched (green or yellow), prevents marking more letters as yellow than the target actually contains
+
+        # checking for correct letters but with wrong position
+        for i in range(self.word_length()):
+            if result[i] == "grey":
+                ch = guess[i]
+                if ch in remaining and remaining[ch] > 0: # check if the letter exists in the target AND there are still unused occurrences left, ensures yellow is assigned only if the target contains this letter in excess                                    
+                    result[i] = "yellow"
+                    remaining[ch] -= 1
+
+        return result # returns the result of this cycle into the list with result
 
 
     def evaluate_guess(self, guess):
@@ -139,4 +151,4 @@ class game_6letter(game):
 ######### TEST ##########
 
 # test for knowing if the game.py was imported successfuly into main.py, other used tests are commented for now
-print("Import of game.py was successful.")
+# print("Import of game.py was successful.")
