@@ -26,7 +26,7 @@ To run the program and play game made in this project you will need to download 
 2. A window with three buttons will appear for selecting the target word length. Click the desired button (4, 5, or 6 letters).
 3. The game grid will appear, along with a MENU button in the corner.
 4. Type your guesses using the keyboard. Letters will appear in the grid.
-5. Press Enter to submit a guess. The game ends when:
+5. Press Enter to submit a guess. The game ends when player guess the target word (win) or will run out of attempts (lose). Those states will be printed into terminal and not into the pygame window. The printed messegase are:
    - YOU WON! THE WORD WAS:
    - YOU LOST! THE WORD WAS:
-6. Click the MENU button to return to the word-length selection screen and start a new game. You can play multiple games without restarting the program.
+6. Click the MENU button to return to the word-length selection screen and start a new game. You can play multiple games without restarting the program. You can even go back to menu if you dont feel like finishing the current running game.
