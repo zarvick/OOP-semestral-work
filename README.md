@@ -6,6 +6,7 @@ This project is a Wordle inspired word-guessing game implemented in Python, with
 - Green – the letter is correct and in the correct position
 - Yellow – the letter exists in the word but in a different position
 - Grey – the letter does not appear in the word
+
 The game enforces a limited number of attempts depending on the word length (4-letter: 5 attempts, 5-letter: 6 attempts, 6-letter: 7 attempts).
 
 ## Navigation
